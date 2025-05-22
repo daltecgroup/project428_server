@@ -50,7 +50,7 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
 };
 
-app.use(cors(corsOptions));
+app.use(cors());
 // Configure multer for file storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
