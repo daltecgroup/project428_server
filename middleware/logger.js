@@ -16,6 +16,7 @@ const logger = (req, res, next) => {
       color
     ]
   );
+  console.log(req.method);
   next();
 };
 
