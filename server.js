@@ -39,7 +39,15 @@ app.use(logger);
 
 // Enable CORS for all origins in this example.
 // In a production environment, you should restrict this.
-app.use(cors());
+// Configure CORS to allow requests from your Firebase Hosting domain
+const corsOptions = {
+  origin: 'https://project428app.web.app', // Replace with your actual Firebase Hosting domain
+  // You might also need to include your custom domain if you're using one for Firebase Hosting
+  // e.g., origin: ['https://YOUR_FIREBASE_HOSTING_DOMAIN.web.app', 'https://your-custom-firebase-domain.com'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+};
+app.use(cors(corsOptions));
 
 // Configure multer for file storage
 const storage = multer.diskStorage({
@@ -92,6 +100,6 @@ app.use(notFound);
 app.use(errorHandler);
 
 // Start the server
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Server is running on port ${port}`); 
 });
