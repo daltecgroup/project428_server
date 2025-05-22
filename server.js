@@ -29,8 +29,8 @@ mongoose.connection.on('connected', () => {
 mongoose.connection.on('error', (err) => {
   console.error('MongoDB connection error:', err);
 });
-app.use(cors());
 app.use(logger);
+app.use(cors());
 
 // Body parser middleware
 app.use(express.json({ limit: '50mb' }));
