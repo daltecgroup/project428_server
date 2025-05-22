@@ -29,13 +29,14 @@ mongoose.connection.on('connected', () => {
 mongoose.connection.on('error', (err) => {
   console.error('MongoDB connection error:', err);
 });
+app.use(cors());
+app.use(logger);
 
 // Body parser middleware
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({limit: '50mb', extended: true }));
 
 // Logger middleware
-app.use(logger);
 
 // Enable CORS for all origins in this example.
 // In a production environment, you should restrict this.
@@ -47,7 +48,6 @@ const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
 };
-app.use(cors());
 
 // Configure multer for file storage
 const storage = multer.diskStorage({

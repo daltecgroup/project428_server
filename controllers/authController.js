@@ -7,7 +7,6 @@ import { ErrorCode } from '../constants/errorCode.js';
 // @route   POST /api/v1/auth/login
 // @access  Public
 export const loginUser = async (req, res) => {
-    console.log(req);
     try {
         const { userId, pin } = req.body;
 
