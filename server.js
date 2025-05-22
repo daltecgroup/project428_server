@@ -29,26 +29,28 @@ mongoose.connection.on('connected', () => {
 mongoose.connection.on('error', (err) => {
   console.error('MongoDB connection error:', err);
 });
-app.use(logger);
-app.use(cors());
+
 
 // Body parser middleware
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({limit: '50mb', extended: true }));
 
 // Logger middleware
+app.use(logger);
+
 
 // Enable CORS for all origins in this example.
 // In a production environment, you should restrict this.
 // Configure CORS to allow requests from your Firebase Hosting domain
 const corsOptions = {
-  origin: 'https://project428app.web.app', // Replace with your actual Firebase Hosting domain
+  origin: 'https://aromabisnisgroup.com/', // Replace with your actual Firebase Hosting domain
   // You might also need to include your custom domain if you're using one for Firebase Hosting
   // e.g., origin: ['https://YOUR_FIREBASE_HOSTING_DOMAIN.web.app', 'https://your-custom-firebase-domain.com'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTION'], // Allowed HTTP methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
 };
 
+app.use(cors(corsOptions));
 // Configure multer for file storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -76,6 +78,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
 });
 
 app.use(upload.single('image'));
+
 
 // Routes
 app.use('/api/v1/auth', auth);
