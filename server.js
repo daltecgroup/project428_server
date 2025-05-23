@@ -59,7 +59,7 @@ const corsOptions = {
   optionsSuccessStatus: 204
 };
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 // Configure multer for file storage
 const storage = multer.diskStorage({
