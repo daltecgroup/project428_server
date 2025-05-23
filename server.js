@@ -38,19 +38,15 @@ app.use(express.urlencoded({limit: '50mb', extended: true }));
 // Logger middleware
 app.use(logger);
 
-
-// Enable CORS for all origins in this example.
-// In a production environment, you should restrict this.
-// Configure CORS to allow requests from your Firebase Hosting domain
 const corsOptions = {
-  origin: 'https://aromabisnisgroup.com/', // Replace with your actual Firebase Hosting domain
-  // You might also need to include your custom domain if you're using one for Firebase Hosting
-  // e.g., origin: ['https://YOUR_FIREBASE_HOSTING_DOMAIN.web.app', 'https://your-custom-firebase-domain.com'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTION'], // Allowed HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+  origin: 'https://aromabisnisgroup.com/',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: 'Content-Type,Authorization',
+  optionsSuccessStatus: 204
 };
 
-app.use(cors());
+app.use(cors(corsOptions));
+
 // Configure multer for file storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
