@@ -30,16 +30,29 @@ mongoose.connection.on('error', (err) => {
   console.error('MongoDB connection error:', err);
 });
 
-
 // Body parser middleware
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({limit: '50mb', extended: true }));
 
-// Logger middleware
-app.use(logger);
+
+
+const allowedOrigins = [
+  'https://aromabisnisgroup.com',
+  'https://project428app.web.app',
+  'https://project428app.firebaseapp.com',
+  'http://localhost:49394'
+];
 
 const corsOptions = {
-  origin: 'https://aromabisnisgroup.com',
+  origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}.`;
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: 'Content-Type,Authorization',
   optionsSuccessStatus: 204
@@ -75,6 +88,9 @@ app.post('/upload', upload.single('image'), (req, res) => {
 
 app.use(upload.single('image'));
 
+// Logger middleware
+app.use(logger);
+
 
 // Routes
 app.use('/api/v1/auth', auth);
@@ -92,7 +108,6 @@ app.use('/api/v1/uploads', express.static('uploads'));
 app.get('/api/v1/health', (req, res) => {
   res.status(200).json({ message: 'Server is healthy!' });
 });
-
 
 // Error handler
 app.use(notFound);
