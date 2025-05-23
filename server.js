@@ -30,9 +30,6 @@ mongoose.connection.on('error', (err) => {
   console.error('MongoDB connection error:', err);
 });
 
-// Body parser middleware
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({limit: '50mb', extended: true }));
 
 
 
@@ -60,6 +57,9 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+// Body parser middleware
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({limit: '50mb', extended: true }));
 
 // Configure multer for file storage
 const storage = multer.diskStorage({
