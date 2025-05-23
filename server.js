@@ -39,7 +39,7 @@ app.use(express.urlencoded({limit: '50mb', extended: true }));
 app.use(logger);
 
 const corsOptions = {
-  origin: 'https://aromabisnisgroup.com/',
+  origin: 'https://aromabisnisgroup.com',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: 'Content-Type,Authorization',
   optionsSuccessStatus: 204
