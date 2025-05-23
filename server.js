@@ -46,6 +46,7 @@ const allowedOrigins = [
 const corsOptions = {
   origin: function (origin, callback) {
     // allow requests with no origin (like mobile apps or curl requests)
+    console.log('Incoming Origin:', origin);
     if (!origin) return callback(null, true);
     if (allowedOrigins.indexOf(origin) === -1) {
       const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}.`;
@@ -53,12 +54,12 @@ const corsOptions = {
     }
     return callback(null, true);
   },
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE, OPTIONS',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   allowedHeaders: 'Content-Type,Authorization',
   optionsSuccessStatus: 204
 };
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 // Configure multer for file storage
 const storage = multer.diskStorage({
