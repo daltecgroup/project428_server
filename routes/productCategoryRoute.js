@@ -27,9 +27,9 @@ router.put('/:id', updateProductCategoryById);
 router.delete('/:id', deleteProductCategoriesById);
 
 // Deactivate a product category by ID
-router.patch('/:id/deactivate', deactivateProductCategoryById);
+router.put('/:id/deactivate', deactivateProductCategoryById);
 
 // Reactivate a product category by ID
-router.patch('/:id/reactivate', reactivateProductCategoryById);
+router.put('/:id/reactivate', reactivateProductCategoryById);
 
 export default router;

@@ -21,5 +21,9 @@ export const ErrorCode = {
     
     // outlet error code
     outletAlreadyExist: 'outlet-already-exist',
-    outletNotFound: 'product-not-found'
+    outletNotFound: 'product-not-found',
+
+    // sales error code
+    salesAlreadyExist: 'outlet-already-exist',
+    salesNotFound: 'product-not-found'
 }

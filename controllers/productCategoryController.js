@@ -90,7 +90,7 @@ export const deleteProductCategoriesById = async (req, res) => {
 }
 
 // @desc    Deactivate a product category by ID
-// @route   PATCH /api/v1/product-categories/:id/deactivate
+// @route   pUT /api/v1/product-categories/:id/deactivate
 // @access  Public
 export const deactivateProductCategoryById = async (req, res) => {
     try {
@@ -114,7 +114,7 @@ export const deactivateProductCategoryById = async (req, res) => {
 }
 
 // @desc    Reactivate a product category by ID
-// @route   PATCH /api/v1/product-categories/:id/reactivate
+// @route   pUT /api/v1/product-categories/:id/reactivate
 // @access  Public
 export const reactivateProductCategoryById = async (req, res) => {
     try {

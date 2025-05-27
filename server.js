@@ -15,9 +15,40 @@ import productCategories from './routes/productCategoryRoute.js';
 import products from './routes/productRoute.js';
 import outlets from './routes/outletRoute.js';
 import operator from './routes/operatorRoute.js';
+import sale from './routes/saleRoute.js';
 
 const port = process.env.PORT || 8001;
 const app = express();
+
+const allowedOrigins = [
+  'https://aromabisnisgroup.com',
+  'https://project428app.web.app',
+  'https://project428app.firebaseapp.com',
+  'http://localhost:59056'
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps or curl requests)
+    console.log('Incoming Origin:', origin);
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}.`;
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  methods: ['GET', 'HEAD', 'PUT', 'POST', 'OPTIONS', 'PATCH', 'DELETE'],
+  // methods: 'GET,HEAD,PUT,POST,DELETE,OPTIONS,PATCH',
+  allowedHeaders: 'Content-Type,Authorization',
+  optionsSuccessStatus: 204
+};
+
+app.use(cors());
+
+// Body parser middleware
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({limit: '50mb', extended: true }));
 
 // MongoDB connection
 mongoose.connect(process.env.DATABASE_URL);
@@ -32,34 +63,6 @@ mongoose.connection.on('error', (err) => {
 
 
 
-
-const allowedOrigins = [
-  'https://aromabisnisgroup.com',
-  'https://project428app.web.app',
-  'https://project428app.firebaseapp.com',
-  'http://localhost:49394'
-];
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    // allow requests with no origin (like mobile apps or curl requests)
-    console.log('Incoming Origin:', origin);
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}.`;
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  allowedHeaders: 'Content-Type,Authorization',
-  optionsSuccessStatus: 204
-};
-
-app.use(cors(corsOptions));
-// Body parser middleware
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({limit: '50mb', extended: true }));
 
 // Configure multer for file storage
 const storage = multer.diskStorage({
@@ -92,7 +95,6 @@ app.use(upload.single('image'));
 // Logger middleware
 app.use(logger);
 
-
 // Routes
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/users', users);
@@ -101,6 +103,7 @@ app.use('/api/v1/product-categories', productCategories);
 app.use('/api/v1/products', products);
 app.use('/api/v1/outlets', outlets);
 app.use('/api/v1/operator', operator);
+app.use('/api/v1/sales', sale);
 
 // Serve static files from the 'uploads' directory (for later retrieval)
 app.use('/api/v1/uploads', express.static('uploads'));

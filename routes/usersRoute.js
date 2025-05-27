@@ -29,12 +29,12 @@ router.put('/:id', updateUserById);
 router.delete('/:id', deleteUserById);
 
 // Deactivate a user by ID
-router.patch('/:id/deactivate', deactivateUserById);
+router.put('/:id/deactivate', deactivateUserById);
 
 // Reactivate a user by ID
-router.patch('/:id/reactivate', reactivateUserById);
+router.put('/:id/reactivate', reactivateUserById);
 
 // Update user role by ID
-router.patch('/:id/role', updateUserRoleById);
+router.put('/:id/role', updateUserRoleById);
 
 export default router;

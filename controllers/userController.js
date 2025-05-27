@@ -123,7 +123,6 @@ export const updateUserById = async (req, res) => {
 // @desc    Delete a user by ID
 // @route   DELETE /api/v1/users/:id
 // @access  Public
-
 export const deleteUserById = async (req, res) => {
     try {
         const user = await User.findOneAndDelete({ userId: req.params.id });
@@ -137,7 +136,7 @@ export const deleteUserById = async (req, res) => {
 }
 
 // @desc    Deactivate a user by ID
-// @route   PATCH /api/v1/users/:id/deactivate
+// @route   PUT /api/v1/users/:id/deactivate
 // @access  Public
 export const deactivateUserById = async (req, res) => {
     try {
@@ -159,7 +158,7 @@ export const deactivateUserById = async (req, res) => {
 }
 
 // @desc    Reactivate a user by ID
-// @route   PATCH /api/v1/users/:id/reactivate
+// @route   PUT /api/v1/users/:id/reactivate
 // @access  Public
 export const reactivateUserById = async (req, res) => {
     try {
@@ -180,7 +179,6 @@ export const reactivateUserById = async (req, res) => {
 // @desc    Update user role by ID
 // @route   PATCH /api/v1/users/:id/role
 // @access  Public
-
 export const updateUserRoleById = async (req, res) => {
     try {
         const { role } = req.body;

@@ -28,10 +28,10 @@ router.put('/:id', updateStockById);
 router.delete('/:id', deleteStockById);
 
 // Deactivate a stock by ID
-router.patch('/:id/deactivate', deactivateStockById);
+router.put('/:id/deactivate', deactivateStockById);
 
 // Reactivate a stock by ID
-router.patch('/:id/reactivate', reactivateStockById);
+router.put('/:id/reactivate', reactivateStockById);
 
 // Get all stocks history
 router.get('/:id/history', getAllStocksHistory);

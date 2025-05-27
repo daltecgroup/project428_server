@@ -31,9 +31,9 @@ router.put('/:id/image', updateOutletImageById);
 router.delete('/:id', deleteOutletById);
 
 // Deactivate a outlet by ID
-router.patch('/:id/deactivate', deactivateOutletById);
+router.put('/:id/deactivate', deactivateOutletById);
 
 // Reactivate a outlet by ID
-router.patch('/:id/reactivate', reactivateOutletById);
+router.put('/:id/reactivate', reactivateOutletById);
 
 export default router;

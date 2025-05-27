@@ -163,7 +163,7 @@ export const deleteOutletById = async (req, res) => {
 }
 
 // @desc    Deactivate a outlet by ID
-// @route   PATCH /api/v1/outlets/:id/deactivate
+// @route   PUT /api/v1/outlets/:id/deactivate
 // @access  Public
 export const deactivateOutletById = async (req, res) => {
     try {
@@ -187,7 +187,7 @@ export const deactivateOutletById = async (req, res) => {
 }
 
 // @desc    Reactivate a outlet by ID
-// @route   PATCH /api/v1/outlets/:id/reactivate
+// @route   PUT /api/v1/outlets/:id/reactivate
 // @access  Public
 export const reactivateOutletById = async (req, res) => {
     try {

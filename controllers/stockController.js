@@ -166,7 +166,7 @@ export const deleteStockById = async (req, res) => {
 }
 
 // @desc    Deactivate a stock by ID
-// @route   PATCH /api/v1/stocks/:id/deactivate
+// @route   PUT /api/v1/stocks/:id/deactivate
 // @access  Public
 export const deactivateStockById = async (req, res) => {
     try {
@@ -190,7 +190,7 @@ export const deactivateStockById = async (req, res) => {
 }
 
 // @desc    Reactivate a stock by ID
-// @route   PATCH /api/v1/stocks/:id/reactivate
+// @route   PUT /api/v1/stocks/:id/reactivate
 // @access  Public
 export const reactivateStockById = async (req, res) => {
     try {
