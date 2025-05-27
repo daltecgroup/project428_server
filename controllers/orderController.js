@@ -1,0 +1,92 @@
+import Order from '../models/orderModel.js';
+import { ErrorCode } from '../constants/errorCode.js';
+
+// @desc    Create a new order
+// @route   POST /api/v1/orders
+// @access  Public
+export const createOrder = async (req, res) => {
+    try {
+        const {
+            outlet,
+            items,
+            total,
+        } = req.body;
+
+        // create random number for code, start with ORDER, YYMM then 6 digits random
+        const date = new Date();
+        const year = date.getFullYear().toString().slice(-2); // Get last 2 digits of the year
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Get month and pad with 0 if needed
+        const randomDigits = Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6 random digits
+        const code = `ORDER${year}${month}${randomDigits}`;
+
+        // check if the order already exists
+        const existingOrder = await Order.findOne({ code });
+        if (existingOrder) {
+            console.log(ErrorCode.orderAlreadyExist);
+            return res.status(400).json({
+                errorCode: ErrorCode.orderAlreadyExist,
+                message: 'Order with this code already exists'
+            });
+        }
+
+        // Create a new product category
+        const newOrder = new Order({
+            code,
+            outlet,
+            items,
+            total,
+        });
+
+        // Save the product category to the database
+        await newOrder.save();
+
+        console.log(`Order successfully created: ${newOrder._id}`);
+        res.status(201).json(newOrder);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            errorCode: ErrorCode.serverError,
+            message: 'Server error',
+            error: error.message
+        });
+    }
+}
+
+// @desc    Get all orders
+// @route   GET /api/v1/orders
+// @access  Public
+export const getOrders = async (req, res) => {
+    try {
+        const orders = await Order.find().populate('outlet').populate('items.stock').exec();
+        res.status(200).json(orders);
+    } catch (error) {
+        res.status(500).json({ errorCode: ErrorCode.serverError,
+            message: 'Server error', error: error.message });
+    }
+};
+
+// @desc    Get order by id
+// @route   GET /api/v1/orders/:id
+// @access  Public
+export const getOrderById = async (req, res) => {
+    try {
+        const order = await Order.findOne({code: req.params.id}).populate('outlet').populate('items.stock').exec();
+        res.status(200).json(order);
+    } catch (error) {
+        res.status(500).json({ errorCode: ErrorCode.serverError,
+            message: 'Server error', error: error.message });
+    }
+};
+
+// @desc    Get orders by outlet
+// @route   GET /api/v1/orders/outlet/:id
+// @access  Public
+export const getOrdersByOutlet = async (req, res) => {
+    try {
+        const orders = await Order.find({outlet: req.params.id}).populate('outlet').populate('items.stock').exec();
+        res.status(200).json(orders);
+    } catch (error) {
+        res.status(500).json({ errorCode: ErrorCode.serverError,
+            message: 'Server error', error: error.message });
+    }
+};

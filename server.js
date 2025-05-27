@@ -16,6 +16,7 @@ import products from './routes/productRoute.js';
 import outlets from './routes/outletRoute.js';
 import operator from './routes/operatorRoute.js';
 import sale from './routes/saleRoute.js';
+import order from './routes/orderRoute.js';
 
 const port = process.env.PORT || 8001;
 const app = express();
@@ -104,6 +105,7 @@ app.use('/api/v1/products', products);
 app.use('/api/v1/outlets', outlets);
 app.use('/api/v1/operator', operator);
 app.use('/api/v1/sales', sale);
+app.use('/api/v1/orders', order);
 
 // Serve static files from the 'uploads' directory (for later retrieval)
 app.use('/api/v1/uploads', express.static('uploads'));
