@@ -57,7 +57,7 @@ export const createOrder = async (req, res) => {
 // @access  Public
 export const getOrders = async (req, res) => {
     try {
-        const orders = await Order.find().populate('outlet').populate('items.stock').exec();
+        const orders = await Order.find().populate('outlet');
         res.status(200).json(orders);
     } catch (error) {
         res.status(500).json({ errorCode: ErrorCode.serverError,
@@ -84,6 +84,29 @@ export const getOrderById = async (req, res) => {
 export const getOrdersByOutlet = async (req, res) => {
     try {
         const orders = await Order.find({outlet: req.params.id}).populate('outlet').populate('items.stock').exec();
+        res.status(200).json(orders);
+    } catch (error) {
+        res.status(500).json({ errorCode: ErrorCode.serverError,
+            message: 'Server error', error: error.message });
+    }
+};
+
+// @desc    Get orders by outlet
+// @route   GET /api/v1/orders/outlet/:id/today
+// @access  Public
+export const getTodayOrdersByOutlet = async (req, res) => {
+    try {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Set to start of the day
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1); // Set to start of the next day
+        const orders = await Order.find({
+            outlet: req.params.id,
+            createdAt: {
+                $gte: today,
+                $lt: tomorrow
+            }
+        }).populate('outlet').populate('items.stock').exec();
         res.status(200).json(orders);
     } catch (error) {
         res.status(500).json({ errorCode: ErrorCode.serverError,

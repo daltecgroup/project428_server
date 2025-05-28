@@ -54,6 +54,27 @@ export const createSale = async (req, res) => {
 }
 
 // @desc    Get all sales by outlet
+// @route   GET /api/v1/sales/outlet/:id/today
+// @access  Public
+export const getTodaySalesByOutlet = async (req, res) => {
+    try {
+        // Get today's date
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const sales = await Sale.find({
+            outlet: req.params.id,
+            createdAt: {
+                $gte: today
+            }
+        }).populate('cashier').populate('outlet').populate('items.product').populate('items.product.category').exec();
+res.status(200).json(sales);
+    } catch (error) {
+        res.status(500).json({ errorCode: ErrorCode.serverError,
+            message: 'Server error', error: error.message });
+    }
+};
+
+// @desc    Get all today's sales by outlet
 // @route   GET /api/v1/sales/outlet/:id
 // @access  Public
 export const getAllSalesByOutlet = async (req, res) => {
@@ -65,6 +86,7 @@ export const getAllSalesByOutlet = async (req, res) => {
             message: 'Server error', error: error.message });
     }
 };
+
 
 // @desc    Get sales by id
 // @route   GET /api/v1/sales/:id
