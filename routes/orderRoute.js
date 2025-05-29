@@ -1,5 +1,11 @@
 import express from 'express';
-import { createOrder, getOrders, getOrderById, getOrdersByOutlet, getTodayOrdersByOutlet } from '../controllers/orderController.js';
+import { createOrder, 
+    getOrders, 
+    getOrderById, 
+    getOrdersByOutlet, 
+    getTodayOrdersByOutlet,
+    updateOrderById
+} from '../controllers/orderController.js';
 
 const router = express.Router();
 
@@ -17,5 +23,8 @@ router.get('/outlet/:id', getOrdersByOutlet);
 
 // Get todays order by outlet
 router.get('/outlet/:id/today', getTodayOrdersByOutlet);
+
+// Update order by id
+router.put('/:id', updateOrderById)
 
 export default router;

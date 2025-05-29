@@ -136,8 +136,8 @@ export const updateOrderById = async (req, res) => {
             }
 
         // Find the user by ID and update it
-            const updatedOrder = await Stock.findOneAndUpdate(
-                { stockId: req.params.id },
+            const updatedOrder = await Order.findOneAndUpdate(
+                { code: req.params.id },
                 { status, items },
                 { new: true }
             );
