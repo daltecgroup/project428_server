@@ -52,3 +52,20 @@ res.status(200).json(attendances);
             message: 'Server error', error: error.message });
     }
 };
+
+// @desc    Get all operator attendance
+// @route   GET /api/v1/attendances/:id
+// @access  Public
+export const getAttendancesByOperator = async (req, res) => {
+    try {
+        // Get today's date
+        const attendances = await Attendance.find({
+            user: req.params.id,
+        }).populate('user');
+        
+res.status(200).json(attendances);
+    } catch (error) {
+        res.status(500).json({ errorCode: ErrorCode.serverError,
+            message: 'Server error', error: error.message });
+    }
+};

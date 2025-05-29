@@ -29,6 +29,8 @@ export const createOrder = async (req, res) => {
             });
         }
 
+        console.log(outlet);
+
         // Create a new product category
         const newOrder = new Order({
             code,
@@ -57,7 +59,7 @@ export const createOrder = async (req, res) => {
 // @access  Public
 export const getOrders = async (req, res) => {
     try {
-        const orders = await Order.find().populate('outlet');
+        const orders = await Order.find().populate('outlet').populate('items.stock').exec();
         res.status(200).json(orders);
     } catch (error) {
         res.status(500).json({ errorCode: ErrorCode.serverError,
@@ -111,5 +113,36 @@ export const getTodayOrdersByOutlet = async (req, res) => {
     } catch (error) {
         res.status(500).json({ errorCode: ErrorCode.serverError,
             message: 'Server error', error: error.message });
+    }
+};
+
+// @desc    Update an order by code
+// @route   PUT /api/v1/orders/:id
+// @access  Public
+export const updateOrderById = async (req, res) => {
+    try {
+        const { status, items} = req.body;
+        const updatedAt = new Date();
+
+        // Find the user by ID and update it
+        const order = await Order.findOne(
+            { code: req.params.id }
+        );
+        
+        if (!order) {
+            return res.status(404).json({ 
+                errorCode: ErrorCode.orderNotFound,
+                message: 'Pesanan tidak ditemukan' });
+            }
+
+        // Find the user by ID and update it
+            const updatedOrder = await Stock.findOneAndUpdate(
+                { stockId: req.params.id },
+                { status, items },
+                { new: true }
+            );
+        res.status(200).json(updatedOrder);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 };

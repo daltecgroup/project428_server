@@ -45,11 +45,6 @@ const orderSchema = new mongoose.Schema({
         enum: ['ordered', 'processed', 'ontheway', 'accepted', 'returned', 'failed'],
         default: 'ordered'
     },
-    isActive: {
-        type: Boolean,
-        default: true,
-        required: true,
-    },
     createdAt: {
         type: Date,
         default: Date.now,
