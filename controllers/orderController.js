@@ -146,3 +146,21 @@ export const updateOrderById = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
+
+// @desc    Delete a order by ID
+// @route   DELETE /api/v1/orders/:id
+// @access  Public
+export const deleteOrdertById = async (req, res) => {
+    try {
+        const order = await Order.findOneAndDelete({ code: req.params.id });
+        if (!order) {
+            return res.status(404).json({ 
+                errorCode: ErrorCode.orderNotFound,
+                message: 'Order not found' });
+        }
+        res.status(200).json({ 
+            message: 'Order deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}
