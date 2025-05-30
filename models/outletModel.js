@@ -16,13 +16,17 @@ const outletSchema = new mongoose.Schema({
         required: true,
     },
     owner: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        }],
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     operator: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        }],
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    spvarea: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     address: {
         province: String,
         regency: String,
@@ -46,10 +50,10 @@ const outletSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    });
+});
 
-    // export the model
-    export default mongoose.model('Outlet', outletSchema);
+// export the model
+export default mongoose.model('Outlet', outletSchema);
 
 
 

@@ -51,7 +51,7 @@ export const createOutlet = async (req, res) => {
 // @access  Public
 export const getAllOutlets = async (req, res) => {
     try {
-        const outlets = await Outlet.find().populate('owner','userId name imgUrl').populate('operator','userId name imgUrl').exec();
+        const outlets = await Outlet.find().populate('owner','userId name imgUrl').populate('operator','userId name imgUrl').populate('spvarea','userId name role imgUrl').exec();
         res.status(200).json(outlets);
     } catch (error) {
         res.status(500).json({ errorCode: ErrorCode.serverError,
@@ -64,7 +64,7 @@ export const getAllOutlets = async (req, res) => {
 // @access  Public
 export const getOutletById = async (req, res) => {
     try {
-        const outlet = await Outlet.findOne({ code: req.params.id }).populate('owner','userId name role imgUrl').populate('operator','userId name role imgUrl').exec();
+        const outlet = await Outlet.findOne({ code: req.params.id }).populate('owner','userId name role imgUrl').populate('operator','userId name role imgUrl').populate('spvarea','userId name role imgUrl').exec();
         if (!outlet) {
             return res.status(404).json({ 
                 errorCode: ErrorCode.outletNotFound,
@@ -82,7 +82,7 @@ export const getOutletById = async (req, res) => {
 // @access  Public
 export const updateOutletById = async (req, res) => {
     try {
-        const {name, owner, operator, address, imgUrl, foundedAt} = req.body;
+        const {name, owner, operator, spvarea, address, imgUrl, foundedAt} = req.body;
         const updatedAt = new Date();
 
         // Find the outlet by ID and update it
@@ -99,9 +99,9 @@ export const updateOutletById = async (req, res) => {
         // Find the user by ID and update it
             const updatedOutlet = await Outlet.findOneAndUpdate(
                 { code: req.params.id },
-                { name, owner, operator, address, imgUrl, foundedAt},
+                { name, owner, operator, spvarea, address, imgUrl, foundedAt},
                 { new: true }
-            ).populate('owner','userId name role imgUrl').populate('operator','userId name role imgUrl').exec();
+            ).populate('owner','userId name role imgUrl').populate('operator','userId name role imgUrl').populate('spvarea','userId name role imgUrl').exec();
 
         res.status(200).json(updatedOutlet);
     } catch (error) {
@@ -135,7 +135,7 @@ export const updateOutletImageById = async (req, res) => {
                 { code: req.params.id },
                 { imgUrl, updatedAt},
                 { new: true }
-            ).populate('owner','userId name role imgUrl').populate('operator','userId name role imgUrl').exec();
+            ).populate('owner','userId name role imgUrl').populate('operator','userId name role imgUrl').populate('spvarea','userId name role imgUrl').exec();
 
         res.status(200).json(updatedOutlet);
     } catch (error) {
