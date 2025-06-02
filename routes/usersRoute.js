@@ -7,7 +7,8 @@ import {
     deleteUserById,
     deactivateUserById,
     reactivateUserById,
-    updateUserRoleById
+    updateUserRoleById,
+    updateUserImageById
 } from '../controllers/userController.js';
 import permission from '../middleware/permission.js';
 
@@ -24,6 +25,9 @@ router.get('/:id', getUserById);
 
 // Update a user by ID
 router.put('/:id', updateUserById);
+
+// Update user image by ID
+router.put('/:id/image', updateUserImageById);
 
 // Delete a user by ID
 router.delete('/:id', deleteUserById);

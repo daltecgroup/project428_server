@@ -11,9 +11,7 @@ const salt = await bcrypt.genSalt(10);
 // @access  Public
 export const createUser = async (req, res) => {
     try {
-        const { userId, name, role, pin, isActive, imgUrl } = req.body;
-
-        var finalImgUrl = '';
+        const { userId, name, role, pin } = req.body;
 
         // hash the pin
         const hashedPin = await bcrypt.hash(pin, salt);
@@ -27,20 +25,12 @@ export const createUser = async (req, res) => {
                 message: 'ID pengguna sudah terdaftar' });
         }
 
-        if(imgUrl == null){
-            finalImgUrl = `https://i.pravatar.cc/150?u=${userId}`;
-        } else {
-            finalImgUrl = imgUrl;
-        }
-
         // Create a new user
         const newUser = new User({
             userId,
             name,
             role,
             pin: hashedPin,
-            isActive,
-            imgUrl: finalImgUrl,
         });
 
         // Save the user to the database
@@ -92,24 +82,31 @@ export const getUserById = async (req, res) => {
 // @access  Public
 export const updateUserById = async (req, res) => {
     try {
-        const { name, role, pin, isActive, imgUrl } = req.body;
+        const { userId, name, role, phone, pin} = req.body;
         const updatedAt = new Date();
+
+        const existingUser = await User.findOne({userId});
+
+        if(existingUser && existingUser._id != req.params.id){
+            return res.status(404).json({ message: 'ID Pengguna sudah terdaftar' });
+        }
 
         // Check if pin is provided and hash it
         let newPin;
         if (pin) {
             newPin = await bcrypt.hash(pin, salt);
         } else {
-            newPin = pin; // Use the existing pin if not provided
+            const existingPin = await User.findOne({ _id: req.params.id});
+            newPin = existingPin.pin; // Use the existing pin if not provided
         }
-
+        
         // Find the user by ID and update it
         const updatedUser = await User.findOneAndUpdate(
-            { userId: req.params.id },
-            { name, role, pin: newPin, isActive, imgUrl, updatedAt },
+            { _id: req.params.id },
+            { userId, name, role, phone, updatedAt, pin: newPin },
             { new: true }
         );
-
+        
         if (!updatedUser) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -199,6 +196,40 @@ export const updateUserRoleById = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 }
+
+// @desc    Update a user image by ID
+// @route   PUT /api/v1/users/:id/image
+// @access  Public
+export const updateUserImageById = async (req, res) => {
+    try { 
+        const updatedAt = new Date();
+
+        // make imgUrl from req.file
+        const imgUrl = req.file ? req.file.filename : null;
+
+        // Find user by ID and update it
+        const user = await User.findOne(
+            { _id: req.params.id }
+        );
+        
+        if (!user) {
+            return res.status(404).json({ 
+                errorCode: ErrorCode.userNotFound,
+                message: 'Pengguna tidak ditemukan' });
+            }
+
+        // Find user by ID and update it
+            const updatedUser = await User.findOneAndUpdate(
+                { _id: req.params.id },
+                { imgUrl, updatedAt},
+                { new: true }
+            );
+
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
 
 
 
