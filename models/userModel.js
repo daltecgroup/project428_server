@@ -27,11 +27,11 @@ const userSchema = new mongoose.Schema({
     },
     imgUrl: {
         type: String,
-        default: null, // Replace with your default image URL
+        default: 'https://i.pravatar.cc/50', // Replace with your default image URL
     },
     phone: {
         type: String,
-        default: ''
+        default: null
     },
     createdAt: {
         type: Date,
