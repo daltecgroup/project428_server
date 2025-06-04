@@ -82,7 +82,7 @@ export const getUserById = async (req, res) => {
 // @access  Public
 export const updateUserById = async (req, res) => {
     try {
-        const { userId, name, role, phone, pin} = req.body;
+        const { userId, name, role, phone, pin, isActive} = req.body;
         const updatedAt = new Date();
 
         const existingUser = await User.findOne({userId});
@@ -103,7 +103,7 @@ export const updateUserById = async (req, res) => {
         // Find the user by ID and update it
         const updatedUser = await User.findOneAndUpdate(
             { _id: req.params.id },
-            { userId, name, role, phone, updatedAt, pin: newPin },
+            { userId, name, role, phone, updatedAt, pin: newPin, isActive },
             { new: true }
         );
         

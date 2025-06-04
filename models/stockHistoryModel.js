@@ -2,8 +2,20 @@ import mongoose from 'mongoose';
 
 const stockHistorySchema = new mongoose.Schema({
     stock: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Stock',
         required: true,
+    },
+    author: {
+        userRef: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
+        },
+        name: {
+            type: String,
+            required: true
+        }
     },
     content: {
         type: String,
@@ -13,11 +25,11 @@ const stockHistorySchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    });
+});
 
-    // export the model
+// export the model
 
-    export default mongoose.model('StockHistory', stockHistorySchema);
+export default mongoose.model('StockHistory', stockHistorySchema);
 
 
 

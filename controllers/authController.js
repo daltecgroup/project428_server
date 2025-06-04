@@ -9,6 +9,7 @@ import { ErrorCode } from '../constants/errorCode.js';
 export const loginUser = async (req, res) => {
     try {
         const { userId, pin } = req.body;
+        console.log(userId);
 
         // Check if the user exists
         const user = await User.findOne({ userId });
