@@ -30,14 +30,14 @@ const productSchema = new mongoose.Schema({
         default: 'https://placebear.com/250/250',
         trim: true
     },
-    category:{
+    category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ProductCategory'
     },
-    ingredients:[{
+    ingredients: [{
         stock: {
             type: mongoose.Schema.Types.ObjectId,
-            ref:'Stock',
+            ref: 'Stock',
             required: true
         },
         qty: {
@@ -59,10 +59,28 @@ const productSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    });
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
+    deletedAt: {
+        type: Boolean,
+        default: null
+    },
+    deletedBy: {
+        type: String,
+        default: null
+    }
+});
 
-    // export the model
-    export default mongoose.model('Product', productSchema);
+// Update timestamp on save
+productSchema.pre('save', function (next) {
+    this.updatedAt = getJakartaTime();
+    next();
+});
+
+// export the model
+export default mongoose.model('Product', productSchema);
 
 
 

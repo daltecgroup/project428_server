@@ -32,11 +32,28 @@ const stockSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    });
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
+    deletedAt: {
+        type: Boolean,
+        default: null
+    },
+    deletedBy: {
+        type: String,
+        default: null
+    }
+});
 
-    // export the model
+// Update timestamp on save
+stockSchema.pre('save', function (next) {
+    this.updatedAt = getJakartaTime();
+    next();
+});
 
-    export default mongoose.model('Stock', stockSchema);
+// export the model
+export default mongoose.model('Stock', stockSchema);
 
 
 

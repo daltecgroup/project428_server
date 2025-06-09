@@ -37,6 +37,8 @@ export const loginUser = async (req, res) => {
         // Generate tokens
         const accessToken = generateAccessToken({ userId: user.userId, role: user.role });
         const refreshToken = generateRefreshToken({ userId: user.userId, role: user.role });
+
+        console.log(user.role);
         
         
         // Send response

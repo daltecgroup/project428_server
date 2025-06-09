@@ -15,6 +15,24 @@ const productCategorySchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
+    deletedAt: {
+        type: Boolean,
+        default: null
+    },
+    deletedBy: {
+        type: String,
+        default: null
+    }
+    });
+
+    // Update timestamp on save
+    productCategorySchema.pre('save', function (next) {
+        this.updatedAt = getJakartaTime();
+        next();
     });
 
     // export the model

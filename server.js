@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import multer from 'multer';
 import path from 'path';
 import cors from 'cors';
+import moment from 'moment-timezone'
 
 // Import routes
 import auth from './routes/authRoute.js';
@@ -18,6 +19,8 @@ import operator from './routes/operatorRoute.js';
 import sale from './routes/saleRoute.js';
 import order from './routes/orderRoute.js';
 import attendance from './routes/attendanceRoute.js';
+
+moment.tz.setDefault('Asia/Jakarta');
 
 const port = process.env.PORT || 8001;
 const app = express();
@@ -63,9 +66,6 @@ mongoose.connection.on('error', (err) => {
   console.error('MongoDB connection error:', err);
 });
 
-
-
-
 // Configure multer for file storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -79,6 +79,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+app.use(upload.single('image'));
 
 // Route to handle image file upload
 app.post('/upload', upload.single('image'), (req, res) => {
@@ -91,8 +92,6 @@ app.post('/upload', upload.single('image'), (req, res) => {
   const imageUrl = `/uploads/${req.file.filename}`; // Construct the URL to access the image
   res.status(200).json({ message: 'Image uploaded successfully!', imageUrl: imageUrl });
 });
-
-app.use(upload.single('image'));
 
 // Logger middleware
 app.use(logger);

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { getJakartaTime } from '../utils/timezone.js';
 import { Roles } from '../constants/roles.js';
 
 const userSchema = new mongoose.Schema({
@@ -35,21 +36,39 @@ const userSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now,
+        default: getJakartaTime,
     },
     updatedAt: {
         type: Date,
-        default: Date.now,
+        default: getJakartaTime,
     },
     lastSeen: {
         type: Date,
-        default: Date.now,
+        default: getJakartaTime,
     },
-    });
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
+    deletedAt: {
+        type: Date,
+        default: null
+    },
+    deletedBy: {
+        type: String,
+        default: null
+    }
+});
 
-    // export the model
+// Update timestamp on save
+userSchema.pre('save', function (next) {
+    this.updatedAt = getJakartaTime();
+    next();
+});
 
-    export default mongoose.model('User', userSchema);
+// export the model
+
+export default mongoose.model('User', userSchema);
 
 
 
