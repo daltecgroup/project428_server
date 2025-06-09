@@ -52,7 +52,6 @@ export const loginUser = async (req, res) => {
                 role: user.role,
                 imgUrl: user.imgUrl,
             },
-            userData: user
         });
     }
     catch (error) {

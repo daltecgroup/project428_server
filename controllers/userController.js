@@ -46,12 +46,35 @@ export const createUser = async (req, res) => {
     }
 };
 
+// @desc    Get users based on latest update
+// @route   POST /api/v1/users/latest
+// @access  Public
+export const getLatestUsers = async (req, res) => {
+    try {
+        var {latest} = req.body;
+        if(!latest){
+            latest = new Date(0);
+        }
+        console.log(latest);
+        const users = await User.find({isDeleted: false,  $or: [
+        { updatedAt: { $gt: latest } },
+        { deletedAt: { $gt: latest } }
+      ]});
+      console.log(users.length);
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ errorCode: ErrorCode.serverError,
+            message: 'Server error', error: error.message });
+    }
+}
+
 // @desc    Get all users
 // @route   GET /api/v1/users
 // @access  Public
 export const getAllUsers = async (req, res) => {
+    
     try {
-        const users = await User.find();
+        const users = await User.find({isDeleted: false});
         res.status(200).json(users);
     } catch (error) {
         res.status(500).json({ errorCode: ErrorCode.serverError,
@@ -99,11 +122,17 @@ export const updateUserById = async (req, res) => {
             const existingPin = await User.findOne({ _id: req.params.id});
             newPin = existingPin.pin; // Use the existing pin if not provided
         }
+
+        var newPhone = null;
+
+        if(phone && phone != ''){
+            newPhone = phone;
+        }
         
         // Find the user by ID and update it
         const updatedUser = await User.findOneAndUpdate(
             { _id: req.params.id },
-            { userId, name, role, phone, updatedAt, pin: newPin, isActive },
+            { userId, name, role, phone: newPhone, updatedAt, pin: newPin, isActive },
             { new: true }
         );
         
@@ -131,6 +160,27 @@ export const deleteUserById = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 }
+
+// @desc    Soft delete a user by ID
+// @route   DELETE /api/v1/users/:id/soft-delete
+// @access  Public
+export const softDeleteUserById = async (req, res) => {
+    try {
+        const user = await User.findOneAndUpdate(
+            { userId: req.params.id },
+            { isActive: false, isDeleted: true, deletedAt: Date.now },
+            { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ message: 'User soft deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
 
 // @desc    Deactivate a user by ID
 // @route   PUT /api/v1/users/:id/deactivate

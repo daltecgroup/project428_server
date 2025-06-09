@@ -2,6 +2,7 @@ import express from 'express';
 import {
     createUser,
     getAllUsers,
+    getLatestUsers,
     getUserById,
     updateUserById,
     deleteUserById,
@@ -19,6 +20,9 @@ router.post('/', createUser);
 
 // Get all users
 router.get('/', getAllUsers);
+
+// Get latest users
+router.post('/latest', getLatestUsers);
 
 // Get a user by ID
 router.get('/:id', getUserById);
