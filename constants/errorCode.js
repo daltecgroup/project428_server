@@ -29,5 +29,9 @@ export const ErrorCode = {
 
     // order error code
     orderAlreadyExist: 'order-already-exist',
-    orderNotFound: 'order-not-found'
+    orderNotFound: 'order-not-found',
+
+    // topping error code
+    toppingAlreadyExist: 'topping-already-exist',
+    toppingNotFound: 'topping-not-found'
 }

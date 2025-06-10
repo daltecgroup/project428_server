@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 import { getJakartaTime } from '../utils/timezone.js';
 
-const stockSchema = new mongoose.Schema({
-    stockId: {
+const toppingSchema = new mongoose.Schema({
+    code: {
         type: String,
         required: true,
         unique: true,
@@ -11,14 +11,40 @@ const stockSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    unit: {
-        type: String,
-        required: true,
-        default: 'weight'
-    },
     price: {
         type: Number,
         required: true,
+    },
+    ingredients: [{
+        stock: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Stock',
+            required: true
+        },
+        name: {
+            type: String,
+            required: true
+        },
+        unit: {
+            type: String,
+            enum: ['weight', 'volume', 'pcs'],
+            default: 'weight',
+            required: true
+        },
+        price: {
+            type: Number,
+            default: 0,
+            required: true
+        },
+        qty: {
+            type: Number,
+            default: 0,
+            required: true
+        }
+    }],
+    imgUrl: {
+        type: String,
+        default: null,
     },
     isActive: {
         type: Boolean,
@@ -48,13 +74,13 @@ const stockSchema = new mongoose.Schema({
 });
 
 // Update timestamp on save
-stockSchema.pre('save', function (next) {
+toppingSchema.pre('save', function (next) {
     this.updatedAt = getJakartaTime();
     next();
 });
 
 // export the model
-export default mongoose.model('Stock', stockSchema);
+export default mongoose.model('Topping', toppingSchema);
 
 
 

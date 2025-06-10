@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { getJakartaTime } from '../utils/timezone.js';
 
 const saleSchema = new mongoose.Schema({
     code: {
@@ -65,6 +66,12 @@ const saleSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    });
+
+    // Update timestamp on save
+    saleSchema.pre('save', function (next) {
+        this.updatedAt = getJakartaTime();
+        next();
     });
 
     // export the model

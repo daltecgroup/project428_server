@@ -19,6 +19,7 @@ import operator from './routes/operatorRoute.js';
 import sale from './routes/saleRoute.js';
 import order from './routes/orderRoute.js';
 import attendance from './routes/attendanceRoute.js';
+import topping from './routes/toppingRoute.js';
 
 moment.tz.setDefault('Asia/Jakarta');
 
@@ -107,6 +108,7 @@ app.use('/api/v1/operator', operator);
 app.use('/api/v1/sales', sale);
 app.use('/api/v1/orders', order);
 app.use('/api/v1/attendances', attendance);
+app.use('/api/v1/toppings', topping);
 
 // Serve static files from the 'uploads' directory (for later retrieval)
 app.use('/api/v1/uploads', express.static('uploads'));
