@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { getJakartaTime } from '../utils/timezone.js';
 
 const attendaceSchema = new mongoose.Schema({
     user: {
@@ -11,13 +12,19 @@ const attendaceSchema = new mongoose.Schema({
         required: true,
         enum: ['clock-in', 'clock-out'],
     },
-    imgUrl:{
+    imgUrl: {
         type: String
     },
     createdAt: {
         type: Date,
         default: Date.now,
     },
+});
+
+// Update timestamp on save
+attendaceSchema.pre('save', function (next) {
+    this.createdAt = getJakartaTime();
+    next();
 });
 
 // export the model

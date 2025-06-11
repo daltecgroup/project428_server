@@ -124,3 +124,22 @@ export const updateToppingImage = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
+
+// @desc    Delete topping by id
+// @route   DELETE /api/v1/toppings/:id
+// @access  Public
+export const deleteToppingById = async (req, res) => {
+    try {
+        const topping = await Topping.findOneAndUpdate({ _id: req.params.id }, {isDeleted: true, deletedAt: getJakartaTime()});
+        if (!topping) {
+            return res.status(404).json({ 
+                errorCode: ErrorCode.toppingNotFound,
+                message: 'Topping not found' });
+        }
+        res.status(200).json({ 
+            
+            message: 'Topping deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}

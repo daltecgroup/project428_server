@@ -2,7 +2,9 @@ import express from 'express';
 import {
     createTopping,
     getAllToppings,
-    updateToppingById
+    updateToppingById,
+    updateToppingImage,
+    deleteToppingById
 } from '../controllers/toppingController.js';
 
 const router = express.Router();
@@ -15,5 +17,11 @@ router.get('/', getAllToppings);
 
 // Update topping by Id
 router.put('/:id', updateToppingById);
+
+// Update topping image by Id
+router.put('/:id/image', updateToppingImage);
+
+// Delete topping by Id
+router.delete('/:id', deleteToppingById)
 
 export default router;
