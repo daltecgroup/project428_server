@@ -85,7 +85,7 @@ export const getOrderById = async (req, res) => {
 // @access  Public
 export const getOrdersByOutlet = async (req, res) => {
     try {
-        const orders = await Order.find({outlet: req.params.id}).populate('outlet').populate('items.stock').exec();
+        const orders = await Order.find({outlet: req.params.id});
         res.status(200).json(orders);
     } catch (error) {
         res.status(500).json({ errorCode: ErrorCode.serverError,
