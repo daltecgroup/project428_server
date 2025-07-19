@@ -7,7 +7,7 @@ const saleSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    items: [{
+    items: [{ 
         product: {
             type: mongoose.Schema.Types.ObjectId,
             ref:'Product',

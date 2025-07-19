@@ -7,35 +7,47 @@ const orderSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    outlet:{
+    outlet: {
+        outletRef: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Outlet'
         },
-    items:[{
-            stock: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref:'Stock',
-                required: true
-            },
-            name: {
-                type: String,
-                required: true
-            },
-            qty: {
-                type: Number,
-                default: 0,
-                required: true
-            },
-            price: {
-                type: Number,
-                default: 0,
-                required: true,
-            },
-            accepted: {
-                type: Boolean,
-                default: false,
-            }
-        }],
+        name: {
+            type: String,
+        },
+        address: {
+            province: String,
+            regency: String,
+            district: String,
+            village: String,
+            street: String,
+        }
+    },
+    items: [{
+        stock: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Stock',
+            required: true
+        },
+        name: {
+            type: String,
+            required: true
+        },
+        qty: {
+            type: Number,
+            default: 0,
+            required: true
+        },
+        price: {
+            type: Number,
+            default: 0,
+            required: true,
+        },
+        accepted: {
+            type: Boolean,
+            default: false,
+        }
+    }],
     total: {
         type: Number,
         default: 0,
@@ -50,7 +62,7 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    
+
     isDeleted: {
         type: Boolean,
         default: false
@@ -63,13 +75,13 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: null
     }
-    });
+});
 
-    // Update timestamp on save
-    orderSchema.pre('save', function (next) {
-        this.updatedAt = getJakartaTime();
-        next();
-    });
+// Update timestamp on save
+orderSchema.pre('save', function (next) {
+    this.updatedAt = getJakartaTime();
+    next();
+});
 
-    // export the model
-    export default mongoose.model('Order', orderSchema);
+// export the model
+export default mongoose.model('Order', orderSchema);

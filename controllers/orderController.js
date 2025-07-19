@@ -1,4 +1,5 @@
 import Order from '../models/orderModel.js';
+import Outlet from '../models/outletModel.js';
 import { ErrorCode } from '../constants/errorCode.js';
 
 // @desc    Create a new order
@@ -29,12 +30,26 @@ export const createOrder = async (req, res) => {
             });
         }
 
+        // check if outlet exist
+        const selectedOutlet = Outlet.findById({outlet});
+        if( !selectedOutlet ) {
+            console.log(ErrorCode.outletNotFound);
+            return res.status(400).json({
+                errorCode: ErrorCode.outletNotFound,
+                message: 'Gerai tidak ditemukan'
+            });
+        }
+
         console.log(outlet);
 
         // Create a new product category
         const newOrder = new Order({
             code,
-            outlet,
+            outlet: {
+                outletRef: selectedOutlet._id,
+                name: selectedOutlet.name,
+                address: selectedOutlet.address
+            },
             items,
             total,
         });
@@ -59,7 +74,7 @@ export const createOrder = async (req, res) => {
 // @access  Public
 export const getOrders = async (req, res) => {
     try {
-        const orders = await Order.find().populate('outlet').populate('items.stock').exec();
+        const orders = await Order.find();
         res.status(200).json(orders);
     } catch (error) {
         res.status(500).json({ errorCode: ErrorCode.serverError,

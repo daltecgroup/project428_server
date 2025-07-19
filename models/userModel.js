@@ -12,11 +12,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    role: {
-        type: Array,
-        default: [Roles.operator],
-        required: true,
-    },
+    role: [
+    {
+      type: String,
+      enum: Object.values(Roles), // <-- NEW: Dynamically use values from your Roles object
+      default: Roles.operator // <-- Optional: Use the constant for default role too
+    }
+  ],
     pin: {
         type: String,
         required: true,
@@ -67,7 +69,6 @@ userSchema.pre('save', function (next) {
 });
 
 // export the model
-
 export default mongoose.model('User', userSchema);
 
 
